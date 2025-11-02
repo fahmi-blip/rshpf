@@ -21,9 +21,9 @@ class isAdministrator
         }
         $userRole =session('user_role');
 
-        if ($userRole == 1) {
+        if ($userRole === 1) {
             return $next($request);
-        }else {
+        }else{
             return back()->with('error', 'Anda tidak memiliki akses ke halaman ini.');
         }
         

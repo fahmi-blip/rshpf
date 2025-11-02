@@ -78,11 +78,6 @@ public function login(Request $request)
             ->withErrors(['password' => 'Password salah. '])
             ->withInput();
     }
-    
-    // ===================================================================
-    // BAGIAN YANG DIPERBAIKI (SESUAI MODUL 10, HALAMAN 13) 
-    // ===================================================================
-
     $namaRole = Role::where('idrole', $user->roleUser[0]->idrole ?? null)->first();
     // Login user ke session
     Auth::login($user);
@@ -99,13 +94,13 @@ public function login(Request $request)
     $userRole = $user->roleUser[0]->idrole ?? null; 
     
     switch ($userRole) {
-        case 1:
+        case '1':
             return redirect()->route('admin.dashboard')->with('success', 'Login berhasil!');
-        case 2:
+        case '2':
             return redirect()->route('dokter.dashboard')->with('success', 'Login berhasil!');
-        case 3:
+        case '3':
              return redirect()->route('perawat.dashboard')->with('success', 'Login berhasil!');
-        case 4:
+        case '4':
             return redirect()->route('resepsionis.dashboard')->with('success', 'Login berhasil!');
         default:
             return redirect()->route('pemilik.dashboard')->with('success', 'Login berhasil!');
