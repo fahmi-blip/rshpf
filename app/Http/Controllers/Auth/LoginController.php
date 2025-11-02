@@ -34,7 +34,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/admin/dashboard';
 
     /**
      * Create a new controller instance.
@@ -92,14 +92,28 @@ public function login(Request $request)
         'user_role_name' => $namaRole->nama_role ?? 'User',
         'user_status' => $user->roleUser[0]->status ?? 'active'
     ]);
-    return redirect()->intended('/admin/dashboard')->with('success', 'Login berhasil!');
+    $userRole = $user->roleUser[0]->idrole ?? null; 
+    
+    switch ($userRole) {
+        case 1:
+            return redirect('/admin/dashboard')->with('success', 'Login berhasil!');
+        case 2:
+            return redirect('/resepsionis/dashboard')->with('success', 'Login berhasil!');
+        case 4:
+            return redirect('/dokter/dashboard')->with('success', 'Login berhasil!');
+        case 3:
+            return redirect('/perawat/dashboard')->with('success', 'Login berhasil!');
+        default:
+            return redirect('/pemilik')->with('success', 'Login berhasil!');
+        
+    }
 }
 public function logout(Request $request)
     {
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/')->with('success', 'Logout berhasil!');
+        return redirect('/login')->with('success', 'Logout berhasil!');
     }
 }
 

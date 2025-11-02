@@ -220,7 +220,7 @@ td a.delete-btn:hover {
         </aside>
         <main class="main-content">
           <header class="main-header">
-            <h1>Selamat Datang di Dashboard Admin</h1>
+            <h1>Selamat Datang di Dashboard Resepsion</h1>
           </header>
     
           <section class="content">
