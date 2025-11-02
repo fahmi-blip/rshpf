@@ -50,8 +50,6 @@ class LoginController extends Controller
     {
         return view('auth.login');
     }
-    
-
 public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -80,6 +78,11 @@ public function login(Request $request)
             ->withErrors(['password' => 'Password salah. '])
             ->withInput();
     }
+    
+    // ===================================================================
+    // BAGIAN YANG DIPERBAIKI (SESUAI MODUL 10, HALAMAN 13) 
+    // ===================================================================
+
     $namaRole = Role::where('idrole', $user->roleUser[0]->idrole ?? null)->first();
     // Login user ke session
     Auth::login($user);
@@ -88,23 +91,24 @@ public function login(Request $request)
         'user_id' => $user->iduser,
         'user_name' => $user->nama,
         'user_email' => $user->email,
-        'user_role' => $user->roleUser [0]->idrole ?? 'user',
+        'user_role' => $user->roleUser[0]->idrole ?? 'user',
         'user_role_name' => $namaRole->nama_role ?? 'User',
         'user_status' => $user->roleUser[0]->status ?? 'active'
     ]);
+    
     $userRole = $user->roleUser[0]->idrole ?? null; 
     
     switch ($userRole) {
         case 1:
-            return redirect('/admin/dashboard')->with('success', 'Login berhasil!');
+            return redirect()->route('admin.dashboard')->with('success', 'Login berhasil!');
         case 2:
-            return redirect('/resepsionis/dashboard')->with('success', 'Login berhasil!');
-        case 4:
-            return redirect('/dokter/dashboard')->with('success', 'Login berhasil!');
+            return redirect()->route('dokter.dashboard')->with('success', 'Login berhasil!');
         case 3:
-            return redirect('/perawat/dashboard')->with('success', 'Login berhasil!');
+             return redirect()->route('perawat.dashboard')->with('success', 'Login berhasil!');
+        case 4:
+            return redirect()->route('resepsionis.dashboard')->with('success', 'Login berhasil!');
         default:
-            return redirect('/pemilik')->with('success', 'Login berhasil!');
+            return redirect()->route('pemilik.dashboard')->with('success', 'Login berhasil!');
         
     }
 }
@@ -116,5 +120,3 @@ public function logout(Request $request)
         return redirect('/login')->with('success', 'Logout berhasil!');
     }
 }
-
-
