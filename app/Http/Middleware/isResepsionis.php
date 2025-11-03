@@ -16,15 +16,14 @@ class isResepsionis
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
+        if (!Auth::check()){
             return redirect()->route('login');
         }
-        $userRole =session('user_role');
-
-        if ($userRole === 4) {
+        $userRole = session()->get('user_role');
+        if($userRole === 4){
             return $next($request);
         }else{
-            return back()->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+            return back()->with('error','Anda tidak memiliki akses ke halaman tersebut.');
         }
     }
 }

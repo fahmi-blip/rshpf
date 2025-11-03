@@ -11,7 +11,7 @@ use App\Models\User;
 use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Log;
 
 
 class LoginController extends Controller
@@ -53,8 +53,8 @@ class LoginController extends Controller
 public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-        'email' => 'required | email',
-        'password' => 'required |min :6',
+        'email' => 'required|email',
+        'password' => 'required|min:6',
     ]);
     if ($validator->fails()) {
         return redirect()->back()
@@ -78,23 +78,32 @@ public function login(Request $request)
             ->withErrors(['password' => 'Password salah. '])
             ->withInput();
     }
-    $namaRole = Role::where('idrole', $user->roleUser[0]->idrole ?? null)->first();
+    
+    $namaRole = Role::where('idrole', $user->roleUser[0]->idrole ?? null)->first();// Asumsi relasi 'role' ada di model RoleUser
+
     // Login user ke session
     Auth::login($user);
-    // Simpan session user
+    Log::info('Login sukses', [
+    'user_id' => Auth::id(),
+    'check' => Auth::check(),
+    'session_all' => session()->all(),
+    ]);
+    
+    // Simpan session user (Ini sebenarnya tidak wajib jika middleware diperbaiki,
+    // tapi kita biarkan untuk saat ini)
     $request->session()->put([
         'user_id' => $user->iduser,
         'user_name' => $user->nama,
         'user_email' => $user->email,
-        'user_role' => $user->roleUser[0]->idrole ?? 'user',
-        'user_role_name' => $namaRole->nama_role ?? 'User',
+        'user_role' => $user->roleUser[0]->idrole ?? 'user', // Gunakan variabel yang aman
+        'user_role_name' => $namaRole->nama_role ?? 'User', // Gunakan variabel yang aman
         'user_status' => $user->roleUser[0]->status ?? 'active'
     ]);
     
-    $userRole = $user->roleUser[0]->idrole ?? null; 
-    
+    $userRole = $user->roleUser[0]->idrole ?? null;
+    // Gunakan variabel yang aman untuk switch
     switch ($userRole) {
-        case '1':
+        case '1': // Lebih baik bandingkan sebagai integer
             return redirect()->route('admin.dashboard')->with('success', 'Login berhasil!');
         case '2':
             return redirect()->route('dokter.dashboard')->with('success', 'Login berhasil!');
@@ -103,8 +112,7 @@ public function login(Request $request)
         case '4':
             return redirect()->route('resepsionis.dashboard')->with('success', 'Login berhasil!');
         default:
-            return redirect()->route('pemilik.dashboard')->with('success', 'Login berhasil!');
-        
+            return redirect()->route('home')->with('success', 'Login berhasil!');
     }
 }
 public function logout(Request $request)
