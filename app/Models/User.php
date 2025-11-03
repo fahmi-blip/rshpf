@@ -54,7 +54,7 @@ class User extends Authenticatable
     }
     public function roleUser()
     {
-        return $this->hasMany(RoleUser::class, 'iduser', 'iduser');
+        return $this->hasMany(RoleUser::class, 'idrole_user', 'idrole_user');
     }
     public function pet()
     {

@@ -61,9 +61,9 @@ public function login(Request $request)
             ->withErrors ($validator)
             ->withInput();
     }
-    $user = User::with(['roleUser' => function($query) {
+    $user = User::with(['role_user' => function($query) {
             $query->where( 'status', 1);
-        }, 'roleUser.role'])
+        }, 'role_user.role'])
         ->where('email', $request->input ('email'))
         ->first();
     
@@ -79,15 +79,10 @@ public function login(Request $request)
             ->withInput();
     }
     
-    $namaRole = Role::where('idrole', $user->roleUser[0]->idrole ?? null)->first();// Asumsi relasi 'role' ada di model RoleUser
+    $namaRole = Role::where('idrole', $user->roleUser[0]->idrole_user ?? null)->first();// Asumsi relasi 'role' ada di model RoleUser
 
     // Login user ke session
     Auth::login($user);
-    Log::info('Login sukses', [
-    'user_id' => Auth::id(),
-    'check' => Auth::check(),
-    'session_all' => session()->all(),
-    ]);
     
     // Simpan session user (Ini sebenarnya tidak wajib jika middleware diperbaiki,
     // tapi kita biarkan untuk saat ini)
@@ -95,24 +90,24 @@ public function login(Request $request)
         'user_id' => $user->iduser,
         'user_name' => $user->nama,
         'user_email' => $user->email,
-        'user_role' => $user->roleUser[0]->idrole ?? 'user', // Gunakan variabel yang aman
+        'user_role' => $user->roleUser[0]->idrole_user ?? 'user', // Gunakan variabel yang aman
         'user_role_name' => $namaRole->nama_role ?? 'User', // Gunakan variabel yang aman
         'user_status' => $user->roleUser[0]->status ?? 'active'
     ]);
     
-    $userRole = $user->roleUser[0]->idrole ?? null;
+    $userRole = $user->roleUser[0]->idrole_user ?? null;
     // Gunakan variabel yang aman untuk switch
     switch ($userRole) {
-        case '1': // Lebih baik bandingkan sebagai integer
+        case 1: // Lebih baik bandingkan sebagai integer
             return redirect()->route('admin.dashboard')->with('success', 'Login berhasil!');
-        case '2':
+        case 2:
             return redirect()->route('dokter.dashboard')->with('success', 'Login berhasil!');
-        case '3':
+        case 3:
              return redirect()->route('perawat.dashboard')->with('success', 'Login berhasil!');
-        case '4':
+        case 4:
             return redirect()->route('resepsionis.dashboard')->with('success', 'Login berhasil!');
         default:
-            return redirect()->route('home')->with('success', 'Login berhasil!');
+            return redirect()->route('admin.dashboard')->with('success', 'Login berhasil!');
     }
 }
 public function logout(Request $request)

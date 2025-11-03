@@ -14,8 +14,8 @@ route::get('/struktur', [SiteController::class, 'struktur'])->name('struktur');
 route::get('/layanan', [SiteController::class, 'layanan'])->name('layanan');
 
 
-Auth::routes();
 
+Auth::routes();
 
 Route::middleware('isAdministrator')->group(function () {
     Route::get('/admin/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');  
@@ -31,6 +31,6 @@ Route::middleware('isAdministrator')->group(function () {
     Route::get('/admin/role-user', [App\Http\Controllers\Admin\RoleUserController::class, 'index'])->name('admin.role-user.index');
 });
 
-Route::middleware(['web','auth','isResepsionis'])->group(function () {
+Route::middleware('isResepsionis')->group(function () {
     Route::get('/resepsionis/dashboard', [App\Http\Controllers\Resepsionis\DashboardResepsionisController::class, 'index'])->name('resepsionis.dashboard');
 });

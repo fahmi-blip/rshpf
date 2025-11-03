@@ -1,4 +1,4 @@
-{{-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -204,8 +204,8 @@ td a.delete-btn:hover {
         <aside class="sidebar">
           <h2 class="sidebar-logo">RSHP</h2>
           <ul class="sidebar-menu">
-            <li><a href="{{ route('admin.dashboard') }}" class="active">Dashboard</a></li>
-                <li><a href="{{ route('admin.jenis-hewan.index') }}">Jenis Hewan</a></li>
+            <li><a href="{{ route('resepsionis.dashboard') }}" class="active">Dashboard</a></li>
+                {{-- <li><a href="{{ route('admin.jenis-hewan.index') }}">Jenis Hewan</a></li>
                 <li><a href="{{ route('admin.pemilik.index') }}">Pemilik</a></li>
                 <li><a href="{{ route('admin.ras-hewan.index') }}">Ras Hewan</a></li>
                 <li><a href="{{ route('admin.kategori.index') }}">Kategori</a></li>
@@ -215,7 +215,7 @@ td a.delete-btn:hover {
                 <li><a href="{{ route('admin.role.index') }}">Manajemen Role</a></li>
                 <li><a href="{{ route('admin.pet.index') }}">Data Hewan Peliharaan</a></li>
                 <li><a href="{{ route('admin.role-user.index') }}">Penetapan Role User</a></li>
-                <li><a href="{{ route('logout') }}" class="logout-btn">Logout</a></li>
+                <li><a href="{{ route('logout') }}" class="logout-btn">Logout</a></li> --}}
           </ul>
         </aside>
         <main class="main-content">
@@ -231,4 +231,4 @@ td a.delete-btn:hover {
       </div>
     </div>
 </body>
-</html> --}}
+</html>

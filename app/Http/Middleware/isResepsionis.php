@@ -20,7 +20,7 @@ class isResepsionis
             return redirect()->route('login');
         }
         $userRole = session()->get('user_role');
-        if($userRole === 4){
+        if($userRole == 4){
             return $next($request);
         }else{
             return back()->with('error','Anda tidak memiliki akses ke halaman tersebut.');
